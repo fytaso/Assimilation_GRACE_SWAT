@@ -21,8 +21,9 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     %% Data assimilation
     encount = size(lst,1)-2;    % number of ensemble members
     parcount = max(hrupar);     % number of partition
-    enpars = cell(parcount, encount);
-    enpars_a = cell(parcount, encount);
+    enpars = cell(parcount, encount);   % The state of the model
+    enpars_a = cell(parcount, encount); % The delta of the state
+    daycount = runEnd - runBegin + 1;   % The number of days of the time window
     % Read the state of this time window
     for q = 3:encount+2
         filename = cd;
@@ -44,6 +45,9 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
         R = obsstd;
         xf_a = enkf(xf_e, mit, y, R);
         for q = 1:encount
+            % Calculate the mean Kalman gain of every day in the time window
+            enpars_a{i,q} = (xf_a - xf_e(:,q)) ./ daycount; 
+            % Record the new state after Kalman filter
             enpars{i,q} = xf_a;
         end
     end
@@ -51,7 +55,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     for q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name, '\');
-        
+        writeState(pars, strt, filePath);
     end
     
     %% Rerun the model, and add in Kalman gains

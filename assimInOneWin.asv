@@ -1,7 +1,7 @@
-function assimInOneWin( lst, obsT, hrupar, graceData )
+function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
 %ASSIMINWIN Process data assimilation in one time window (one month)
 %
-%   assimInOneWin( lst, obsT, hrupar, graceData )
+%   assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
 %
 %   lst -- The list of folders of ensembles.
 %   obsT -- The string of time window, e.g. "2003001-2003031".
@@ -9,6 +9,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData )
 %             "hrupar(i)=j" means the i-th hru belongs to the j-th partition.
 %   graceData -- The GRACE observation data of the time window. It is a
 %                vector whose length is the number of partition.
+%   obsstd -- The standard derivation of the GRACE observation.
     
     %% Initial run
     runBegin = str2num(obsT(1:7));
@@ -36,8 +37,21 @@ function assimInOneWin( lst, obsT, hrupar, graceData )
         n = length(pars{i});
         xf_e = zeros(n, encount);
         for q = 1:encount
-            xf
+            xf_e(:,q) = enpars{i,q};
         end
+        mit = mts{i};
+        y = graceData(i)';
+        R = obsstd;
+        xf_a = enkf(xf_e, mit, y, R);
+        for q = 1:encount
+            enpars{i,q} = xf_a;
+        end
+    end
+    % Write the model states of the time window
+    for q = 3:encount+2
+        filename = cd;
+        filename = strcat(filename, '\Ensemble\', lst(q,1).name, '\');
+        
     end
     
     %% Rerun the model, and add in Kalman gains
