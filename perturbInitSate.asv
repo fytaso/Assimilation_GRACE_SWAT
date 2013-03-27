@@ -1,0 +1,12 @@
+function perturbInitSate( perturbStd, init_state_path )
+%PERTURBINITSATE Perturb the initial model states, based on Gaussian
+%distribution
+%   
+%   perturbInitSate( perturbStd, init_state_path )
+%
+%   perturbStd -- The standor
+%
+
+
+end
+
