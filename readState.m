@@ -12,6 +12,7 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
 %   pars        - The matrix of model states of the partition
 %   mts         - The observation operator
 
+    %% Load the necessary variables
     load hruarea;
     
     parcount = max(hrupar);         % The number of partitions.
@@ -23,8 +24,8 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
     mch = config(3);    % The number of reaches.
     msub = config(4);   % The number of subasin.
     
-    pars = cell(parcount,1);
-    mts = cell(parcount,1);
+    pars = cell(parcount,1);    % The matrix of model states of the partition
+    mts = cell(parcount,1);     % The observation operator
     
     ystart = str2double(strt(1:4));
     dstart = str2double(strt(5:7));
@@ -37,7 +38,7 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
         pararea(hrupar(j)) = pararea(hrupar(j)) + hruarea(j);
     end
     
-    % Read the state of every day in the time window
+    %% Read the state of every day in the time window
     for y = ystart:yend
         for d = dstart:dend
             filename = strcat(filePath, ...

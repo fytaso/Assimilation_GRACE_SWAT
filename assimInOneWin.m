@@ -37,6 +37,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
             enpars{i,q-2} = pars{i};
         end
     end
+    
     %% Data assimilation
     fprintf('Starting the assimilation...\n');
     for i = 1:parcount
@@ -63,7 +64,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name, '\');
         fprintf('Writing the %dth ensemble.\n', q-2);
-        writeState(pars, obsT, filename);
+        writeState(pars, obsT, filename, hrupar);
     end
     
     %% Rerun the model, and add in Kalman gains
