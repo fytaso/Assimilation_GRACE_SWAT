@@ -47,7 +47,7 @@ function writeState( pars, strt, filePath, hrupar )
         date_state(ind_hru) = pars{i};
     end
     for t = 1:tcount
-        dates{t} = date_state;  % Everyday has the same Kalman gain, e.g. the average gain of this month.
+        dates{t} = date_state;  % Everyday has the same Kalman gai
     end
 
     for t = 1:tcount

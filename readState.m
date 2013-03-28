@@ -64,7 +64,7 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
         pars{i} = pars{i}/tcount;
     end
     
-    % Construct observation operator
+    %% Construct observation operator
     for j = 1:mhru
         par = hrupar(j);
         mts{par} = [mts{par}, (ones(1,5+mlyr))*hruarea(j)/pararea(par)];
