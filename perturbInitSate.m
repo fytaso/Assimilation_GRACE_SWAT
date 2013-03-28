@@ -1,12 +1,14 @@
-function perturbInitSate( perturbStd, init_state_path )
+function perturbInitSate( lst, perturbStd, init_state_path )
 %PERTURBINITSATE Perturb the initial model states, based on Gaussian
 %distribution
 %   
-%   perturbInitSate( perturbStd, init_state_path )
+%   perturbInitSate( perturbStd, init_state_path, encount )
 %
+%   lst -- The list of the folders of ensemble.
 %   perturbStd -- The standard derivation of the Gaussian distribution.
-%   init_state_path -- The filename of the initial model states
+%   init_state_path -- The filename of the initial model states.
     
+    encount = size(lst,1)-2; % The number of ensemble members
     init_state = importdata(strcat(init_state_path, 'swat_state.dat'));
     for q = 3:encount+2
         filename = cd;

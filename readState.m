@@ -4,6 +4,9 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
 % INPUT
 %   strt        - The string of the time window
 %   filePath    - The path of the folder
+%   hrupar      - The correspondence between HRU and partition, e.g.
+%                 "hrupar(i)=j" means the i-th HRU belongs to the j-th
+%                 partition
 %
 % OUTPUT
 %   pars        - The matrix of model states of the partition
@@ -14,16 +17,15 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
     load subhrucount;
     load subarea;
     
-    hrucount = size(hrusub,1);
-    subcount = max(hrusub);
-    parcount = max(hrupar);
-    pararea = zeros(parcount,1);
+    hrucount = length(hrupar);      % The number of HRUs.
+    parcount = max(hrupar);         % The number of partitions.
+    pararea = zeros(parcount,1);    % The area of each partition.
     
     config = importdata(strcat(filePath, 'configuration.dat'));
-    mhru = config(1);
-    mlyr = config(2);
-    mch = config(3);
-    msub = config(4);
+    mhru = config(1);   % The number of HRUs.
+    mlyr = config(2);   % The number of soil layers.
+    mch = config(3);    % The number of reaches.
+    msub = config(4);   % The number of subasin.
     
     pars = cell(parcount,1);
     mts = cell(parcount,1);
