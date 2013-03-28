@@ -16,21 +16,22 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     parcount = max(hrupar);     % number of partition
     enpars = cell(parcount, encount);   % The state of the model
     enpars_a = cell(parcount, encount); % The delta of the state
-    daycount = runEnd - runBegin + 1;   % The number of days of the time window
-
-    %% Initial run
-    fprintf('Executing the initial run of the model...\n');
     runBegin = str2num(obsT(1:7));
     runEnd = str2num(obsT(9:15))+1;
     writeBegin = runBegin;
     writeEnd = runEnd-1;
-    runSwat(lst, runBegin,runEnd, writeBegin,writeEnd);
+    daycount = runEnd - runBegin + 1;   % The number of days of the time window
+
+    %% Initial run
+    fprintf('Executing the initial run of the model...\n');
+%     runSwat(lst, runBegin,runEnd, writeBegin,writeEnd);
     
     %% Read the state of this time window
     fprintf('Reading the state of this time window...\n'); 
     for q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name,'\');
+        fprintf('Reading the %dth ensemble.\n', q-2);
         [pars, mts] = readState(obsT, filename, hrupar);
         for i = 1:parcount
             enpars{i,q-2} = pars{i};
@@ -51,9 +52,9 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
         xf_a = enkf(xf_e, mit, y, R);
         for q = 1:encount
             % Calculate the mean Kalman gain of every day in the time window
-            enpars_a{i,q} = (xf_a - xf_e(:,q)) ./ daycount; 
+            enpars_a{i,q} = (xf_a(:,q) - xf_e(:,q)) ./ daycount; 
             % Record the new state after Kalman filter
-            enpars{i,q} = xf_a;
+            enpars{i,q} = xf_a(:,q);
         end
     end
     % Write the model states of the time window
@@ -61,7 +62,8 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     for q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name, '\');
-        writeState(pars, strt, filePath);
+        fprintf('Writing the %dth ensemble.\n', q-2);
+        writeState(pars, obsT, filename);
     end
     
     %% Rerun the model, and add in Kalman gains
