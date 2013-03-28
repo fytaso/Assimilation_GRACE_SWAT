@@ -19,7 +19,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     daycount = runEnd - runBegin + 1;   % The number of days of the time window
 
     %% Initial run
-    fprintf('The initial run of the model');
+    fprintf('Executing the initial run of the model...\n');
     runBegin = str2num(obsT(1:7));
     runEnd = str2num(obsT(9:15))+1;
     writeBegin = runBegin;
@@ -27,7 +27,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     runSwat(lst, runBegin,runEnd, writeBegin,writeEnd);
     
     %% Read the state of this time window
-    fprintf('Reading the state of time window.\n'); 
+    fprintf('Reading the state of this time window...\n'); 
     for q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name,'\');
@@ -37,7 +37,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
         end
     end
     %% Data assimilation
-    fprintf('Starting the assimilation.\n');
+    fprintf('Starting the assimilation...\n');
     for i = 1:parcount
         fprintf('Assimilating the %dth partition (totally %d partitions)...\n',i,parcount);
         n = length(pars{i});

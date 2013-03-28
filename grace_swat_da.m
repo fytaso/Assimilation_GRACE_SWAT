@@ -24,7 +24,10 @@ fprintf('\nPerturbing finished.\n');
 fprintf('*****************************************************************\n\n\n');
 
 %% Main route
-fprintf('Start the data assimilation.\n');
+fprintf('Start the data assimilation:\n\n');
 for t = 1:length(graceDate)
-    obsT = graceDate{t};
+    obsT = graceDate(t,1);
+    fprintf('Assimilating the time window--%s...\n', obsT);
+    assimInOneWin(lst, obsT, hrupar, graceData, obsstd);
+    fprintf('Assimilation of %s is finished.\n\n', obsT);
 end
