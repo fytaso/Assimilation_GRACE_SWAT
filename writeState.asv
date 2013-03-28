@@ -43,11 +43,15 @@ function writeState( pars, strt, filePath, hrupar )
     n = 4+mlyr;     % The dimension of the state of each day.
     date_state = zeros(n*mhru,1);  % The state of the output date.
     for i = 1:parcount
-        ind_hru = (parcount==i); % The index of HURs that are in this partition.
+        ind_hru = (hrupar==i); % The index of HURs that are in this partition.
+        ind_hru_date = [];
+        for j = 1:mhru
+            ind_hru_date = ind_hru_date
+        end
         date_state(ind_hru) = pars{i};
     end
     for t = 1:tcount
-        dates{t} = date_state;  % Everyday has the same Kalman gai
+        dates{t} = date_state;  % Everyday has the same Kalman gain, e.g. the average gain of this month.
     end
 
     for t = 1:tcount
