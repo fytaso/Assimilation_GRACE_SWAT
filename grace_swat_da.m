@@ -2,11 +2,13 @@
 clc;
 clear;
 
-lst = dir(strcat(cd, '\Ensemble'));
+lst = dir(strcat(cd, '\Ensemble')); % The list of folders of ensembles.
 
-load lv2;
+% Select a particular scale
+load r_450km;
+
+% Necessary variables
 parcount = max(hrupar);         % The number of partitions.
-
 encount = size(lst,1)-2;        % The number of ensamble members
 graceDate = importdata('GRACEdate.dat');    % The string of the time windows of GRACE observations.
 
@@ -16,29 +18,11 @@ matlabpool local 12
 %% Perturb initial model states
 perturbStd = 0.1;
 init_state_path = strcat(cd, '\initial_state_2003001\');
-init_state = importdata(strcat(init_state_path, 'swat_state.dat'));
-for q = 3:encount+2
-    filename = cd;
-    filename = strcat(filename, '\Ensemble\', lst(q,1).name,'\');
-    perturb_state = init_state;
-    for i = 1:length(perturb_state)
-        std = perturbStd * perturb_state(i);
-        rnd = randn(1)*std;
-        if ~isempty(rnd)
-            perturb_state(i) = perturb_state(i) + rnd;
-        end
-        if perturb_state(i)<0
-            perturb_state(i) = 0;
-        end
-    end
-    dlmwrite( strcat(filename, 'swat_state.dat'), ...
-        perturb_state, 'delimiter','', 'precision','%30.15f');
-    copyfile('swat2009.exe', filename);
-end
+fprintf('Start perturbing the initial states.');
+perturbInitState(lst, perturbStd, init_state_path);
+fprintf('Perturbing finished.\n');
 
-'Perturbing finished'
-
-% Main route
+%% Main route
 enpars = cell(parcount,encount);
 enpars_a = cell(parcount,encount);
 

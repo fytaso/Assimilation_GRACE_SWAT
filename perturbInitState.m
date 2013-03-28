@@ -1,4 +1,4 @@
-function perturbInitSate( lst, perturbStd, init_state_path )
+function perturbInitState( lst, perturbStd, init_state_path )
 %PERTURBINITSATE Perturb the initial model states, based on Gaussian
 %distribution
 %   
