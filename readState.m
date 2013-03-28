@@ -14,7 +14,6 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
 
     load hruarea;
     
-    hrucount = length(hrupar);      % The number of HRUs.
     parcount = max(hrupar);         % The number of partitions.
     pararea = zeros(parcount,1);    % The area of each partition.
     
@@ -34,7 +33,7 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
     
     tcount = dend - dstart + 1;
     
-    for j = 1:hrucount
+    for j = 1:mhru
         pararea(hrupar(j)) = pararea(hrupar(j)) + hruarea(j);
     end
     

@@ -5,17 +5,15 @@ clear;
 lst = dir(strcat(cd, '\Ensemble'));
 
 load lv2;
-parcount = max(hrupar);
-obsstd = 20;
+parcount = max(hrupar);         % The number of partitions.
 
-% number of ensamble members
-encount = size(lst,1)-2;
+encount = size(lst,1)-2;        % The number of ensamble members
+graceDate = importdata('GRACEdate.dat');    % The string of the time windows of GRACE observations.
 
-graceDate = importdata('GRACEdate.dat');
+% Activate the multi-core computation
+matlabpool local 12
 
-% matlabpool local 4
-
-% Perturb initial model states
+%% Perturb initial model states
 perturbStd = 0.1;
 init_state_path = strcat(cd, '\initial_state_2003001\');
 init_state = importdata(strcat(init_state_path, 'swat_state.dat'));
