@@ -10,7 +10,7 @@ function writeState( pars, strt, filePath, hrupar )
 %   filePath    - The path of folder
 
     %% Load the necessary variabless
-    mvar = 4; % The number of variables except soil moistures.
+    mvar = 4; % The
     
     parcount = max(hrupar);         % The number of partitions.
     hrucount = length(hrupar);      % The number of HRUs.
@@ -42,7 +42,7 @@ function writeState( pars, strt, filePath, hrupar )
 %     end
 
     %% The new codes for partitions
-    n = mvar+mlyr;     % The dimension of the state of each day.
+    n = 4+mlyr;     % The dimension of the state of each day.
     date_state = zeros(n*mhru,1);  % The state of the output date.
     for i = 1:parcount
         ind_hru = (hrupar==i); % The index of HURs that are in this partition.
