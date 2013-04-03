@@ -9,12 +9,12 @@ function runSwat( lst, runBegin, runEnd, writeBegin, writeEnd )
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q).name);
         setDateCtrl(filename, runBegin,runEnd, writeBegin,writeEnd, [],[]);
-        cd(filename);
+%         cd(filename);
         if q==encount+2
             cd(filename);
             system('swat2009.exe');
         else
-            winopen('swat2009.exe');
+            winopen(strcat(filename, '\swat2009.exe'));
         end
         cd(initDir);
     end

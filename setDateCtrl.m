@@ -20,6 +20,8 @@ function setDateCtrl( filePath, runBegin, runEnd, writeBegin, writeEnd, readBegi
         dateCtrlRead = [readBegin; readEnd];
         dlmwrite( strcat(filePath, '\da_ctrl_read.dat'), ...
             dateCtrlRead, 'delimiter','', 'precision','%7d');
+    else
+        delete( strcat(filePath, '\da_ctrl_read.dat') );
     end
         
 end

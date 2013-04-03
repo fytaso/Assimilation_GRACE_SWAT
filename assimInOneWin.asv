@@ -64,7 +64,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name, '\');
         fprintf('Writing the %dth ensemble.\n', q-2);
-        writeState(enpars_a(:,q), obsT, filename, hrupar);
+        writeState(pars, obsT, filename, hrupar);
     end
     
     %% Rerun the model, and add in Kalman gains

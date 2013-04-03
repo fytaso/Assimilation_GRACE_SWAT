@@ -40,7 +40,7 @@ function writeState( pars, strt, filePath, hrupar )
 %     end
 
     %% The new codes for partitions
-    n = 4+mlyr;     % The dimension of the state of each day.
+    n = 5+mlyr;     % The dimension of the state of each day.
     date_state = zeros(n*mhru,1);  % The state of the output date.
     for i = 1:parcount
         ind_hru = (hrupar==i); % The index of HURs that are in this partition.
@@ -52,6 +52,7 @@ function writeState( pars, strt, filePath, hrupar )
                 ind_hru_date = [ind_hru_date; false(n,1)];
             end
         end
+        ind_hru_date = logical(ind_hru_date);
         date_state(ind_hru_date) = pars{i};
     end
     for t = 1:tcount
