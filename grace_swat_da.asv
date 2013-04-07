@@ -35,16 +35,3 @@ end
 
 %% Calculate Ensemble Mean
 ensembleMean;
-% rerun the model
-runBegin = str2num(graceDate{1}(1:7));
-runEnd = str2num(graceData{end}(9:15));
-writeBegin = runBegin;
-writeEnd = runEnd;
-readBegin = runBegin;
-readEnd = runEnd;
-initDir = cd;
-filename = strcat(initDir, '\Ensemble\', lst(q).name);
-setDateCtrl(filename, runBegin,runEnd, writeBegin,writeEnd, readBegin,readEnd);
-cd(filename);
-system('swat2009.exe');
-cd(initDir);

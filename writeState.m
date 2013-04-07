@@ -2,12 +2,13 @@ function writeState( pars, strt, filePath, hrupar )
 %WRITESTATE Write the model state of the sub-basins, in the obs window of
 %strt.
 %
-%   writeState( pars, strt, filePath )
+%   writeState( pars, strt, filePath, hrupar )
 %
 % INPUT
-%   pars        - The cell of partitions.
+%   pars        - The cell of partitions
 %   str         - The string of time window
 %   filePath    - The path of folder
+%   hrupar      - The correspondence between HRUs and partitions
 
     %% Load the necessary variabless
     mvar = 4; % The number of variables except soil moistures.
