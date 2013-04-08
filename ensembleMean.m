@@ -5,7 +5,7 @@ encount = size(lst,1)-2;
 
 graceDate = importdata('GRACEDate.dat');
 
-load r_450km;
+% load r_450km;
 parcount = max(hrupar);
 
 for t = 1:size(graceDate,1)
