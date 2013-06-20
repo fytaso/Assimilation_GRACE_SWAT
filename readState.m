@@ -15,7 +15,7 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
     %% Load the necessary variables
     load hruarea;
     
-    mvar = 4; % The number of variables except soil moistures.
+    mvar = 5; % The number of variables except soil moistures.
     
     parcount = max(hrupar);         % The number of partitions.
     pararea = zeros(parcount,1);    % The area of each partition.
@@ -67,9 +67,10 @@ function [ pars, mts ] = readState( strt, filePath, hrupar )
     end
     
     %% Construct observation operator
+    ind = 1;
     for j = 1:mhru
         par = hrupar(j);
-        mts{par} = [mts{par}, (ones(1,4+mlyr))*hruarea(j)/pararea(par)];
+        mts{par} = [mts{par}, (ones(1,mvar+mlyr))*hruarea(j)/pararea(par)];
         ind = ind + mvar + mlyr;
     end
 

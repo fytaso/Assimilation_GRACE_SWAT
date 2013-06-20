@@ -5,17 +5,20 @@ function runSwat( lst, runBegin, runEnd, writeBegin, writeEnd )
     encount = size(lst,1)-2;
     
     initDir = cd;
-    for q = 3:encount+2
-        filename = cd;
-        filename = strcat(filename, '\Ensemble\', lst(q).name);
+    for q = 3:encount + 2
+        filename = strcat(initDir, '\Ensemble\', lst(q).name);
+        fprintf('Set up the date control of the %dth ensemble...\n', q-2);
         setDateCtrl(filename, runBegin,runEnd, writeBegin,writeEnd, [],[]);
-%         cd(filename);
-        if q==encount+2
-            cd(filename);
-            system('swat2009.exe');
-        else
-            winopen(strcat(filename, '\swat2009.exe'));
-        end
-        cd(initDir);
     end
+    for q = 3:encount+1
+        filename = strcat(initDir, '\Ensemble\', lst(q).name);
+%         setDateCtrl(filename, runBegin,runEnd, writeBegin,writeEnd, [],[]);
+%         fprintf('Set up the date control of the %dth ensemble...\n', q-2);
+        winopen(strcat(filename, '\swat2009.exe'));
+    end
+
+    filename = strcat(initDir, '\Ensemble\', lst(encount+2).name);
+    cd(filename);
+    system('swat2009.exe');
+    cd(initDir);
 end

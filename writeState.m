@@ -11,7 +11,7 @@ function writeState( pars, strt, filePath, hrupar )
 %   hrupar      - The correspondence between HRUs and partitions
 
     %% Load the necessary variabless
-    mvar = 4; % The number of variables except soil moistures.
+    mvar =5; % The number of variables except soil moistures.
     
     parcount = max(hrupar);         % The number of partitions.
     hrucount = length(hrupar);      % The number of HRUs.
@@ -65,7 +65,7 @@ function writeState( pars, strt, filePath, hrupar )
     for t = 1:tcount
         fullPath = strcat(filePath, ...
             num2str(ystart,'%04g'), num2str(dstart+t-1,'%03g'), '.dat');
-        dlmwrite( fullPath, dates{t}, 'delimiter','', 'precision','%20.4f');
+        dlmwrite( fullPath, dates{t}, 'delimiter','', 'precision', '%20.4f');
     end
 end
 

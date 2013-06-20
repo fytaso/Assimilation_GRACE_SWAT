@@ -16,6 +16,7 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     parcount = max(hrupar);     % number of partition
     enpars = cell(parcount, encount);   % The state of the model
     enpars_a = cell(parcount, encount); % The delta of the state
+    enmts = cell(parcount, encount); % The observation operator
     runBegin = str2num(obsT(1:7));
     runEnd = str2num(obsT(9:15))+1;
     writeBegin = runBegin;
@@ -23,31 +24,36 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     daycount = runEnd - runBegin + 1;   % The number of days of the time window
 
     %% Initial run
-    fprintf('Executing the initial run of the model...\n');
+    fprintf('Backup the initial state of the model...\n');
+    init_state_backup(lst);
+    fprintf('Execute the initial run of the model...\n');
     runSwat(lst, runBegin,runEnd, writeBegin,writeEnd);
     
     %% Read the state of this time window
     fprintf('Reading the state of this time window...\n'); 
-    for q = 3:encount+2
+    tic
+    parfor q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name,'\');
         fprintf('Reading the %dth ensemble.\n', q-2);
         [pars, mts] = readState(obsT, filename, hrupar);
         for i = 1:parcount
             enpars{i,q-2} = pars{i};
+            enmts{i,q-2} = mts{i};
         end
     end
+    toc
     
     %% Data assimilation
     fprintf('Starting the assimilation...\n');
     for i = 1:parcount
         fprintf('Assimilating the %dth partition (totally %d partitions)...\n',i,parcount);
-        n = length(pars{i});
+        n = length(enpars{i,1});
         xf_e = zeros(n, encount);
         for q = 1:encount
             xf_e(:,q) = enpars{i,q};
         end
-        mit = mts{i};
+        mit = enmts{i,q};
         y = graceData(i)';
         R = obsstd;
         xf_a = enkf(xf_e, mit, y, R);
@@ -60,15 +66,19 @@ function assimInOneWin( lst, obsT, hrupar, graceData, obsstd )
     end
     % Write the model states of the time window
     fprintf('Writing the model states of the time window.\n');
-    for q = 3:encount+2
+    tic
+    parfor q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name, '\');
         fprintf('Writing the %dth ensemble.\n', q-2);
         writeState(enpars_a(:,q-2), obsT, filename, hrupar);
     end
+    toc
     
     %% Rerun the model, and add in Kalman gains
-    fprintf('Rerun the model, and add in Kalman gains.\n');
+    fprintf('Retrieve the initial state of the model...\n');
+    init_state_retrieve(lst);
+    fprintf('Rerun the model, and add in Kalman gains...\n');
     readBegin = writeBegin;
     readEnd = writeEnd;
     runSwatUpdate(lst, runBegin,runEnd, writeBegin,writeEnd, readBegin,readEnd);

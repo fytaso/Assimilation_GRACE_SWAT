@@ -10,7 +10,7 @@ function perturbInitState( lst, perturbStd, init_state_path )
     
     encount = size(lst,1)-2; % The number of ensemble members
     init_state = importdata(strcat(init_state_path, 'swat_state.dat'));
-    for q = 3:encount+2
+    parfor q = 3:encount+2
         filename = cd;
         filename = strcat(filename, '\Ensemble\', lst(q,1).name,'\');
         perturb_state = init_state;
@@ -28,6 +28,7 @@ function perturbInitState( lst, perturbStd, init_state_path )
         dlmwrite( strcat(filename, 'swat_state.dat'), ...
             perturb_state, 'delimiter','', 'precision','%30.15f');
         copyfile(strcat(init_state_path, 'swat2009.exe'), filename);
+        copyfile(strcat(init_state_path, 'file.cio'), filename);
     end
     
 end

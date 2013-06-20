@@ -3,7 +3,7 @@ lst = dir('Ensemble');
 % number of ensemble members
 encount = size(lst,1)-2;
 
-graceDate = importdata('GRACEDate.dat');
+graceDate = importdata('GRACEDate2003.dat');
 
 % load r_450km;
 parcount = max(hrupar);
